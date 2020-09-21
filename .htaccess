@@ -1,0 +1,29 @@
+# Enable GZIP 
+<ifmodule mod_deflate.c> 
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript 
+BrowserMatch ^Mozilla/4 gzip-only-text/html 
+BrowserMatch ^Mozilla/4\.0[678] no-gzip 
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html 
+</ifmodule> 
+
+# Expires Headers - 2678400s = 31 days 
+<ifmodule mod_expires.c> 
+  ExpiresActive On 
+  ExpiresDefault "access plus 2678400 seconds" 
+  ExpiresByType image/png "access plus 2678400 seconds" 
+  ExpiresByType text/css "access plus 750000 seconds" 
+  ExpiresByType text/javascript "access plus 2678400 seconds" 
+  ExpiresByType application/x-javascript "access plus 2678400 seconds" 
+</ifmodule> 
+  
+# Cache Headers 
+<ifmodule mod_headers.c> 
+  # Cache specified files for 31 days 
+  <filesmatch "\.(ico|png|css|swf)$"> 
+  Header set Cache-Control "max-age=2678400, public" 
+  </filesmatch> 
+  # Cache Javascripts for 31 days 
+  <filesmatch "\.(js)$"> 
+  Header set Cache-Control "max-age=2678400, private" 
+  </filesmatch> 
+</ifmodule>  
